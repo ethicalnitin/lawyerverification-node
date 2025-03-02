@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lawyer Verification</title>
+</head>
+<body>
+  <h1>Lawyer Verification</h1>
+  <form id="verificationForm">
+    <label for="registrationNumber">Registration Number:</label>
+    <input type="text" id="registrationNumber" name="registrationNumber" required>
+    <button type="submit">Verify</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('verificationForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const regNumber = document.getElementById('registrationNumber').value;
+      try {
+        const res = await fetch('/api/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registrationNumber: regNumber })
+        });
+        const data = await res.json();
+        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('result').innerText = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
